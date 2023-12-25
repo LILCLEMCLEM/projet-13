@@ -1,0 +1,79 @@
+.FormContainer{
+    display: flex;
+    justify-content: center;
+    height: 810px;
+    background-color: #12002b;
+}
+
+.Form{
+    margin-top: 50px;
+    width: 305px;
+    height: 360px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+}
+
+form{
+    
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+.Form>.fa-user-circle{
+    margin-top: 25px;
+    margin-bottom: 20px;
+}
+
+label{
+    margin-top: 20px;
+    align-items: start;
+    margin-right: auto;
+}
+
+.FormRemember{
+    margin-left: 3px;
+    display: flex;
+    align-self: flex-start;
+    flex-direction: row;
+}
+
+input{
+    
+    height: 30px;
+}
+
+.formtext{
+    font-weight: bold;
+}
+
+.SigninText{
+    margin-bottom: 5px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.cb{
+    margin-top: 10px;
+}
+
+.rb{
+    margin-top: 15px;
+    margin-left: 5px;
+}
+
+.buttonSubmit{
+    border: 0px;
+    height: 40px;
+    display: block;
+  width: 100%;
+  padding: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  border-color: #00bc77;
+  text-decoration: underline;
+  background-color: #00bc77;
+  color: #fff;
+}

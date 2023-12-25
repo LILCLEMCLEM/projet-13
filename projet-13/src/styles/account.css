@@ -1,0 +1,106 @@
+.account_container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #12002b;
+    padding-bottom: 74px;
+}
+.AccountUser{
+    padding-top:30px ;
+    display: flex;
+    flex-direction: column;
+}
+
+.AccountUser >h1 {
+    color: white;
+    
+}
+
+.edit-btn{
+    border-color: #00bc77;
+  background-color: #00bc77;
+  color: #fff;
+  font-weight: bold;
+  padding: 10px;
+  width: 120px;
+
+}
+
+.btn-container{
+    
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.balance_container{
+    margin-top: 30px;
+    display: flex;
+    width: 80%;
+    height: 140px;
+    flex-direction: row;
+    justify-content: start;
+    background-color: white;
+}
+
+.bl-container{
+    width: 80%;
+    margin-left: 20px;
+    flex-direction: column;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.bl-container >p {
+    margin: 0;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.bl-container> h3 {
+    font-weight: 300;
+}
+
+.btn-bl-container{
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.btn-bl-edit {
+    padding: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  border-color: #00bc77;
+  background-color: #00bc77;
+  color: #fff;
+}
+
+@media all and (width < 700px) {
+    .balance_container{
+        flex-direction: column;
+        height: 175px;
+        align-items: center;
+    }
+    .bl-container{
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-top: 5px;
+        margin-left: 0px;
+        
+
+
+    }
+    .btn-bl-container{
+        width: 100%;
+    }
+}
