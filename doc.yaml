@@ -1,0 +1,172 @@
+---
+swagger: '2.0'
+info:
+  title: Bank Argent API Backend
+  description: Spécification Endpoint du Back-end ArgentBank
+  version: 1.0.0
+  termsOfService: http://swagger.io/terms/
+host: localhost:3001
+basePath: /api/v1
+schemes:
+    - http
+paths:
+    /user/profile/{acc_ID}/Gettransactions:
+        get:
+            security:
+                - Bearer: []
+            tags:
+                - Transactions
+            summary: Récupérer les transactions du mois en cours
+            description: Endpoint pour récupérer les transations du mois
+            consumes:
+                - 'application/json'
+            produces:
+                - 'application/json'
+            parameters:
+                - in: header
+                  type: string
+                  name: Authorization
+                  description: Attach Bearer JWT token
+                  required: true
+                - name: acc_ID
+                  in: path
+                  description: Id of the account
+                  required: true
+                  type: string
+                - name: month
+                  in: query
+                  description: Month of the transaction (if no value, return the current month)
+                  required: false
+                  type: string
+                  enum:
+                   - Jan
+                   - Fev
+                   - Mar
+                   - Avr
+                   - Mai
+                   - Jui
+                   - Juil
+                   - Aou
+                   - Sep
+                   - Oct
+                   - Nov
+                   - Dec
+            responses:
+                '200':
+                    description: les transations ont été récupéré
+                  
+                '400':
+                    description: Champ(s) invalide(s)
+                '401':
+                    description: Mauvais Token
+                '404':
+                    description: Utilisateur non trouvé
+                '500':
+                    description: Erreur serveur
+    
+    /user/profile/{acc_ID}/transactions/{transactionId}:
+        get:
+            security:
+                - Bearer: []
+            tags:
+                - Transactions
+            summary: Récupérer transaction via l'ID
+            description: API pour récupérer une seule trnasaction
+            produces:
+                - 'application/json'
+            parameters:
+                - in: header
+                  type: string
+                  name: Authorization
+                  description: Attach Bearer JWT token
+                  required: true
+                - name: acc_ID
+                  in: path
+                  description: Id du compte
+                  required: true
+                  type: string
+                - name: transactionId
+                  in: path
+                  description: Id de la transaction
+                  required: true
+                  type: string
+                
+            responses:
+                '200':
+                    description: la transaction a été récupéré
+                   
+                '400':
+                    description: Champ(s) invalide(s)
+                '401':
+                    description: Accès non autorisé
+                '404':
+                    description: Transaction n'existe pas
+                '500':
+                    description: Erreur serveur
+        put:
+            security:
+                - Bearer: []
+            tags:
+                - Transactions
+            summary: Mettre a jour une transaction existante
+            description: Endpoint pour mettre a jour les information d'une transaction
+            produces:
+                - 'application/json'
+            parameters:
+                - in: header
+                  type: string
+                  name: Authorization
+                  description: Attach Bearer JWT token
+                  required: true
+                - name: acc_ID
+                  in: path
+                  description: Id de l'utilisateur
+                  required: true
+                  type: string
+                - name: transactionId
+                  in: path
+                  description: Id de la transaction
+                  required: true
+                  type: string
+                - in: body
+                  name: body
+                  description: détails de la transaction a mettre a jour
+                  required: true
+                  schema:
+                      $ref: '#/definitions/TransactionDetail'
+            responses:
+                '200':
+                    description: Modification enregistré
+                    
+                '400':
+                    description: Champ(s) invalide(s)
+                '401':
+                    description: Accès non autorisé
+                '404':
+                    description: Transaction n'existe pas
+                '500':
+                    description: Erreur Serveur
+                    
+                    
+securityDefinitions:
+    Bearer:
+        type: apiKey
+        name: Authorization
+        in: header
+        
+        
+definitions:
+
+        
+    TransactionDetail:
+      type: object
+      properties:
+        category:
+          type: string
+          description: catégorie
+          example: Repas
+        notes:
+          type: string
+          description: transaction notes
+          example: Sortie      
+      
