@@ -6,8 +6,8 @@ export const loginAsync = createAsyncThunk(
   async ({ email, password, remember }) => {
     const response = await LoginFormSubmit(email, password);
     console.log(remember);
-    
-    response.remember = remember
+
+    response.remember = remember;
     return response;
   }
 );

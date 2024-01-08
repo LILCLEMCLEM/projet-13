@@ -2,7 +2,6 @@ import Features from "../components/Feature";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import HomeScreen from "../components/Home";
-import "../styles/App.css";
 
 import money from "../assets/icon-money.png";
 import chat from "../assets/icon-chat.png";

@@ -1,6 +1,6 @@
 .HomeFrame{
     background-image: url('../assets/bank-tree.jpeg');
-  background-position: 0 -20%;
+  background-position: 0 40%;
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
@@ -61,6 +61,8 @@
         
         right: 2%;
     }
+
+    
 }
 
 @media all and (width < 580px) {

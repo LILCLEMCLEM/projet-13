@@ -1,172 +1,184 @@
----
 swagger: '2.0'
 info:
-  title: Bank Argent API Backend
-  description: Spécification Endpoint du Back-end ArgentBank
-  version: 1.0.0
-  termsOfService: http://swagger.io/terms/
-host: localhost:3001
-basePath: /api/v1
-schemes:
-    - http
-paths:
-    /user/profile/{acc_ID}/Gettransactions:
-        get:
-            security:
-                - Bearer: []
-            tags:
-                - Transactions
-            summary: Récupérer les transactions du mois en cours
-            description: Endpoint pour récupérer les transations du mois
-            consumes:
-                - 'application/json'
-            produces:
-                - 'application/json'
-            parameters:
-                - in: header
-                  type: string
-                  name: Authorization
-                  description: Attach Bearer JWT token
-                  required: true
-                - name: acc_ID
-                  in: path
-                  description: Id of the account
-                  required: true
-                  type: string
-                - name: month
-                  in: query
-                  description: Month of the transaction (if no value, return the current month)
-                  required: false
-                  type: string
-                  enum:
-                   - Jan
-                   - Fev
-                   - Mar
-                   - Avr
-                   - Mai
-                   - Jui
-                   - Juil
-                   - Aou
-                   - Sep
-                   - Oct
-                   - Nov
-                   - Dec
-            responses:
-                '200':
-                    description: les transations ont été récupéré
-                  
-                '400':
-                    description: Champ(s) invalide(s)
-                '401':
-                    description: Mauvais Token
-                '404':
-                    description: Utilisateur non trouvé
-                '500':
-                    description: Erreur serveur
-    
-    /user/profile/{acc_ID}/transactions/{transactionId}:
-        get:
-            security:
-                - Bearer: []
-            tags:
-                - Transactions
-            summary: Récupérer transaction via l'ID
-            description: API pour récupérer une seule trnasaction
-            produces:
-                - 'application/json'
-            parameters:
-                - in: header
-                  type: string
-                  name: Authorization
-                  description: Attach Bearer JWT token
-                  required: true
-                - name: acc_ID
-                  in: path
-                  description: Id du compte
-                  required: true
-                  type: string
-                - name: transactionId
-                  in: path
-                  description: Id de la transaction
-                  required: true
-                  type: string
-                
-            responses:
-                '200':
-                    description: la transaction a été récupéré
-                   
-                '400':
-                    description: Champ(s) invalide(s)
-                '401':
-                    description: Accès non autorisé
-                '404':
-                    description: Transaction n'existe pas
-                '500':
-                    description: Erreur serveur
-        put:
-            security:
-                - Bearer: []
-            tags:
-                - Transactions
-            summary: Mettre a jour une transaction existante
-            description: Endpoint pour mettre a jour les information d'une transaction
-            produces:
-                - 'application/json'
-            parameters:
-                - in: header
-                  type: string
-                  name: Authorization
-                  description: Attach Bearer JWT token
-                  required: true
-                - name: acc_ID
-                  in: path
-                  description: Id de l'utilisateur
-                  required: true
-                  type: string
-                - name: transactionId
-                  in: path
-                  description: Id de la transaction
-                  required: true
-                  type: string
-                - in: body
-                  name: body
-                  description: détails de la transaction a mettre a jour
-                  required: true
-                  schema:
-                      $ref: '#/definitions/TransactionDetail'
-            responses:
-                '200':
-                    description: Modification enregistré
-                    
-                '400':
-                    description: Champ(s) invalide(s)
-                '401':
-                    description: Accès non autorisé
-                '404':
-                    description: Transaction n'existe pas
-                '500':
-                    description: Erreur Serveur
-                    
-                    
+  title: Gestion des Transactions API
+  version: '1.0'
+  description: API pour gérer les transactions financières
 securityDefinitions:
-    Bearer:
-        type: apiKey
-        name: Authorization
-        in: header
-        
-        
-definitions:
+  bearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: Utilisez le format "Bearer <token>"
 
-        
-    TransactionDetail:
-      type: object
-      properties:
-        category:
+paths:
+  /transactions:
+    get:
+      summary: Récupérer toutes les transactions du mois en cours groupées par compte
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
           type: string
-          description: catégorie
-          example: Repas
-        notes:
+          description: Token JWT au format "Bearer <token>"
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste des transactions réussie
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Transaction'
+          examples:
+            application/json:
+              - id: 1
+                account_id: 123
+                amount: 100.0
+                date: '2024-01-08'
+              - id: 2
+                account_id: 456
+                amount: 50.0
+                date: '2024-01-08'
+        '401':
+          description: Non autorisé (Token manquant ou invalide)
+          schema:
+            $ref: '#/definitions/ErrorUnauthorized'
+        '500':
+          description: Erreur interne du serveur
+          schema:
+            $ref: '#/definitions/ErrorInternalServerError'
+
+  /transactions/{transactionId}:
+    get:
+      summary: Récupérer les détails d'une transaction spécifique
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          type: integer
+          description: ID de la transaction à récupérer
+     
+        - name: Authorization
+          in: header
+          required: true
           type: string
-          description: transaction notes
-          example: Sortie      
+          description: Token JWT au format "Bearer <token>"
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Détails de la transaction récupérés avec succès
+          schema:
+            $ref: '#/definitions/Transaction'
+          examples:
+            application/json:
+              id: 1
+              account_id: 123
+              amount: 100.0
+              date: '2024-01-08'
+        '401':
+          description: Non autorisé (Token manquant ou invalide)
+          schema:
+            $ref: '#/definitions/ErrorUnauthorized'
+        '404':
+          description: Transaction non trouvée
+          schema:
+            $ref: '#/definitions/ErrorNotFound'
+        '500':
+          description: Erreur interne du serveur
+          schema:
+            $ref: '#/definitions/ErrorInternalServerError'
+
+    put:
+      summary: Modifier les détails d'une transaction spécifique
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          type: integer
+          description: ID de la transaction à modifier
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Transaction'
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Transaction modifiée avec succès
+          
+        '401':
+          description: Non autorisé (Token manquant ou invalide)
+          schema:
+            $ref: '#/definitions/ErrorUnauthorized'
+        '404':
+          description: Transaction non trouvée
+          schema:
+            $ref: '#/definitions/ErrorNotFound'
+        '500':
+          description: Erreur interne du serveur
+          
+          schema:
+            $ref: '#/definitions/ErrorInternalServerError'
+          
+  
+
+   
+definitions:
+  
+  Transaction:
+    type: object
+    properties:
+      id:
+        type: integer
+      account_id:
+        type: integer
+      amount:
+        type: number
       
+
+  ErrorUnauthorized:
+    type: object
+    properties:
+      error:
+        type: object
+        properties:
+          code:
+            type: integer
+          message:
+            type: string
+    example:
+      error:
+        code: 401
+        message: "Non autorisé. Veuillez fournir un token valide dans l'en-tête Authorization."
+
+  ErrorNotFound:
+    type: object
+    properties:
+      error:
+        type: object
+        properties:
+          code:
+            type: integer
+          message:
+            type: string
+    example:
+      error:
+        code: 404
+        message: "La transaction spécifiée n'a pas été trouvée."
+
+  ErrorInternalServerError:
+    type: object
+    properties:
+      error:
+        type: object
+        properties:
+          code:
+            type: integer
+          message:
+            type: string
+    example:
+      error:
+        code: 500
+        message: "Une erreur interne du serveur s'est produite. Veuillez réessayer ultérieurement."
